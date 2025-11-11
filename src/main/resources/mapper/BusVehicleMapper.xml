@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.BusVehicleMapper">
+    <select id="selectAll" resultType="com.example.demo.entity.BusVehicle">
+        SELECT * FROM bus_vehicles ORDER BY create_time DESC
+    </select>
+
+    <select id="selectById" parameterType="Integer" resultType="com.example.demo.entity.BusVehicle">
+        SELECT * FROM bus_vehicles WHERE vehicle_id = #{vehicleId}
+    </select>
+
+    <insert id="insert" parameterType="com.example.demo.entity.BusVehicle">
+        INSERT INTO bus_vehicles (license_plate, model, capacity, status, purchase_date, create_time)
+        VALUES (#{licensePlate}, #{model}, #{capacity}, #{status}, #{purchaseDate}, #{createTime})
+    </insert>
+
+    <update id="update" parameterType="com.example.demo.entity.BusVehicle">
+        UPDATE bus_vehicles
+        SET license_plate=#{licensePlate}, model=#{model}, capacity=#{capacity},
+            status=#{status}, purchase_date=#{purchaseDate}
+        WHERE vehicle_id = #{vehicleId}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        DELETE FROM bus_vehicles WHERE vehicle_id = #{vehicleId}
+    </delete>
+</mapper>

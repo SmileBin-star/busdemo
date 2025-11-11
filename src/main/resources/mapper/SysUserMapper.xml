@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.SysUserMapper">
+
+    <!-- 根据用户名查询 -->
+    <select id="selectByUsername" parameterType="String" resultType="com.example.demo.entity.SysUser">
+        SELECT * FROM sys_user WHERE username = #{username} AND status = 1
+    </select>
+
+    <!-- 查询所有用户 -->
+    <select id="selectAll" resultType="com.example.demo.entity.SysUser">
+        SELECT * FROM sys_user ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="selectById" parameterType="Integer" resultType="com.example.demo.entity.SysUser">
+        SELECT * FROM sys_user WHERE user_id = #{userId}
+    </select>
+
+    <!-- 新增用户 -->
+    <insert id="insert" parameterType="com.example.demo.entity.SysUser">
+        INSERT INTO sys_user (username, password, role, create_time, status)
+        VALUES (#{username}, #{password}, #{role}, #{createTime}, #{status})
+    </insert>
+
+    <!-- 修改用户 -->
+    <update id="update" parameterType="com.example.demo.entity.SysUser">
+        UPDATE sys_user
+        SET
+            username = #{username},
+            password = #{password},
+            role = #{role},
+            status = #{status}
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- 逻辑删除用户（将状态改为0表示禁用） -->
+    <update id="deleteById" parameterType="Integer">
+        UPDATE sys_user
+        SET status = 0
+        WHERE user_id = #{userId}
+    </update>
+
+</mapper>
