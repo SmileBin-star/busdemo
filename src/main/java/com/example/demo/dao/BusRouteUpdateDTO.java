@@ -1,16 +1,19 @@
 package com.example.demo.dao;
 
 import lombok.Data;
-import javax.validation.constraints.*;
+
 import java.math.BigDecimal;
 import java.time.LocalTime;
-import java.util.List;
 
 /**
- * 新增线路DTO - 接收前端新增线路（含关联站点）的参数
+ * 修改线路DTO - 接收前端修改线路的参数（不含站点，站点单独维护）
  */
 @Data
-public class BusRouteAddDTO {
+public class BusRouteUpdateDTO {
+    @NotNull(message = "线路ID不能为空")
+    @Positive(message = "线路ID必须为正整数")
+    private Integer routeId; // 线路ID
+
     @NotBlank(message = "线路名称不能为空")
     @Size(max = 50, message = "线路名称长度不能超过50字符")
     private String routeName; // 线路名称
@@ -37,8 +40,8 @@ public class BusRouteAddDTO {
     @NotNull(message = "末班车时间不能为空")
     private LocalTime arrivalTime; // 末班车时间
 
-    @NotNull(message = "线路站点列表不能为空")
-    @Size(min = 2, message = "线路至少包含2个站点")
-    private List<BusRouteStationDTO> stationList; // 关联的站点列表
+    @NotNull(message = "线路状态不能为空")
+    @Min(value = 0, message = "线路状态只能是0（停运）或1（运营）")
+    @Max(value = 1, message = "线路状态只能是0（停运）或1（运营）")
+    private Integer status; // 状态（0-停运/1-运营）
 }
-

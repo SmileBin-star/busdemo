@@ -19,12 +19,18 @@ public class SysUserServiceImpl implements SysUserService {
     // 登录逻辑：密码加密校验
     @Override
     public SysUser login(String username, String password) {
-        // 1. 加密用户输入的密码
-        String encryptedPwd = DigestUtils.md5DigestAsHex(password.getBytes());
-        // 2. 查询用户（注意：需引入org.springframework.util.DigestUtils）
-        SysUser user = userMapper.selectByUsername(username);
-        if (user != null && user.getPassword().equals(encryptedPwd)) {
-            return user;
+        // 防SQL注入：使用参数绑定（MyBatis已处理），添加输入过滤
+        String safeUsername = username.replaceAll("[^a-zA-Z0-9_]", "");
+        SysUser user = userMapper.selectByUsername(safeUsername);
+
+        if (user != null) {
+            // 密码加密校验（保持原有）
+            String encryptedPwd = DigestUtils.md5DigestAsHex(password.getBytes());
+            if (user.getPassword().equals(encryptedPwd)) {
+                // 脱敏处理：清除返回对象中的密码
+                user.setPassword(null);
+                return user;
+            }
         }
         return null;
     }

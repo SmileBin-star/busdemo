@@ -26,4 +26,14 @@
     <delete id="deleteById" parameterType="Integer">
         DELETE FROM bus_vehicles WHERE vehicle_id = #{vehicleId}
     </delete>
+
+    <select id="selectByPage" resultType="com.example.demo.entity.BusVehicle">
+        SELECT * FROM bus_vehicles
+        ORDER BY create_time DESC
+            LIMIT #{start}, #{size}
+    </select>
+
+    <select id="countTotal" resultType="Integer">
+        SELECT COUNT(*) FROM bus_vehicles
+    </select>
 </mapper>
